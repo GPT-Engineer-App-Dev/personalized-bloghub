@@ -1,10 +1,16 @@
 import { Box, Container, Flex, Heading, Link, Text, VStack, HStack, Divider, Button, useColorMode, Switch } from "@chakra-ui/react";
-import { FaTwitter, FaFacebook, FaInstagram } from "react-icons/fa";
+import { FaTwitter, FaFacebook, FaInstagram, FaTrash } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 const Index = ({ colorMode, toggleColorMode }) => {
   const [posts, setPosts] = useState([]);
+
+  const handleDelete = (index) => {
+    const updatedPosts = posts.filter((_, i) => i !== index);
+    setPosts(updatedPosts);
+    localStorage.setItem("posts", JSON.stringify(updatedPosts));
+  };
 
   useEffect(() => {
     const storedPosts = JSON.parse(localStorage.getItem("posts")) || [];
@@ -35,10 +41,20 @@ const Index = ({ colorMode, toggleColorMode }) => {
           <Divider mb={4} />
           <VStack spacing={4} align="start">
             {posts.map((post, index) => (
-              <Box key={index}>
+              <Box key={index} position="relative">
                 <Heading as="h3" size="lg">{post.title}</Heading>
                 <Text>{post.content}</Text>
                 <Text fontSize="sm" color="gray.500">Tags: {post.tags.join(", ")}</Text>
+                <Button 
+                  position="absolute" 
+                  top="0" 
+                  right="0" 
+                  colorScheme="red" 
+                  size="sm" 
+                  onClick={() => handleDelete(index)}
+                >
+                  <FaTrash />
+                </Button>
               </Box>
             ))}
           </VStack>
