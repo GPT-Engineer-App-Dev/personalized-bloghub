@@ -1,9 +1,9 @@
-import { Box, Container, Flex, Heading, Link, Text, VStack, HStack, Divider, Button } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Link, Text, VStack, HStack, Divider, Button, useColorMode, Switch } from "@chakra-ui/react";
 import { FaTwitter, FaFacebook, FaInstagram } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
-const Index = () => {
+const Index = ({ colorMode, toggleColorMode }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -12,9 +12,9 @@ const Index = () => {
   }, []);
 
   return (
-    <Container maxW="container.xl" p={4}>
+    <Container maxW="container.xl" p={4} bg={colorMode === "dark" ? "gray.800" : "white"} color={colorMode === "dark" ? "white" : "black"}>
       {/* Navigation Bar */}
-      <Flex as="nav" bg="gray.100" p={4} mb={8} justifyContent="space-between" alignItems="center">
+      <Flex as="nav" bg={colorMode === "dark" ? "gray.700" : "gray.100"} p={4} mb={8} justifyContent="space-between" alignItems="center">
         <Heading as="h1" size="lg">My Blog</Heading>
         <HStack spacing={4}>
           <Link as={RouterLink} to="/">Home</Link>
@@ -22,6 +22,7 @@ const Index = () => {
           <Link href="#">About</Link>
           <Link href="#">Blog</Link>
           <Link href="#">Contact</Link>
+        <Switch color="green" isChecked={colorMode === "dark"} onChange={toggleColorMode} />
         </HStack>
       </Flex>
 
@@ -44,7 +45,7 @@ const Index = () => {
         </Box>
 
         {/* Sidebar */}
-        <Box flex="1" p={4} bg="gray.50" borderRadius="md" ml={{ md: 4 }} mt={{ base: 4, md: 0 }}>
+        <Box flex="1" p={4} bg={colorMode === "dark" ? "gray.700" : "gray.50"} borderRadius="md" ml={{ md: 4 }} mt={{ base: 4, md: 0 }}>
           <Heading as="h3" size="md" mb={4}>Recent Posts</Heading>
           <VStack spacing={2} align="start">
             {posts.slice(0, 3).map((post, index) => (
@@ -62,7 +63,7 @@ const Index = () => {
       </Flex>
 
       {/* Footer */}
-      <Box as="footer" bg="gray.100" p={4} mt={8}>
+      <Box as="footer" bg={colorMode === "dark" ? "gray.700" : "gray.100"} p={4} mt={8}>
         <HStack justifyContent="center" spacing={4}>
           <Link href="#"><FaTwitter /></Link>
           <Link href="#"><FaFacebook /></Link>
